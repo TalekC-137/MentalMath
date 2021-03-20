@@ -2,26 +2,34 @@ package com.scollon.mentalmath;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView tv1, tv2, wynikGracza;
     char choice, cho;
     Integer wyn;
-    Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6,btn7,btn8,btn9,btn0,btndot, delete;
+    Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6,btn7,btn8,btn9,btn0,btndot, delete, add;
+    Helper helper = new Helper();
+    ListView lv_customerList;
+    int a = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.equasion);
         tv2 = findViewById(R.id.wynik);
+        lv_customerList = findViewById(R.id.lv_customer_List);
+        add = findViewById(R.id.adddd);
         btn0 = findViewById(R.id.btn0);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
@@ -129,6 +137,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+try {
+    helper = new Helper(a, -1);
+    Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
+
+
+}catch (Exception e){
+    Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+
+}
+DataBase dataBase =  new DataBase(MainActivity.this, 1);
+boolean succes = dataBase.addOne(helper);
+
+                List<Helper> everyone = dataBase.getEveryone();
+                ArrayAdapter customerArrayAdapter = new ArrayAdapter<Helper>(MainActivity.this, android.R.layout.simple_list_item_1, everyone);
+                lv_customerList.setAdapter(customerArrayAdapter);
+            }
+        });
 
 
 
