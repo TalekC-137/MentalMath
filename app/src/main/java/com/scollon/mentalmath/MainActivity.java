@@ -2,9 +2,12 @@ package com.scollon.mentalmath;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,12 +18,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tv1, tv2, wynikGracza;
+    TextView tv1, tv2, wynikGracza, tvtv, pukty;
     char choice, cho;
     Integer wyn;
     Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6,btn7,btn8,btn9,btn0,btndot, delete, add;
     Helper helper = new Helper();
     ListView lv_customerList;
+
     int a = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.equasion);
         tv2 = findViewById(R.id.wynik);
-        lv_customerList = findViewById(R.id.lv_customer_List);
+        pukty = findViewById(R.id.punkciki);
+    //    lv_customerList = findViewById(R.id.lv_customer_List);
         add = findViewById(R.id.adddd);
+        tvtv = findViewById(R.id.tvtv);
         btn0 = findViewById(R.id.btn0);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
@@ -56,13 +62,43 @@ public class MainActivity extends AppCompatActivity {
         tv1.setText(Num + cho + Num2+ "=?");
         tv2.setText(PrawWynik.toString());
 
+        DataBase dataBase = new DataBase(MainActivity.this, 1);
+        if(dataBase.getRowCount() != 0){
+            Long liczba = dataBase.getRowCount();
+           Helper newest = dataBase.getOne(liczba);
+            Integer wynik = newest.getId();
+
+
+            pukty.setText("points: " + wynik);
+        }else{
+            pukty.setText("points: 0");
+        }
+
+
 
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nowy = wynikGracza.getText().toString();
                 wynikGracza.setText(nowy + "0");
+            /*    DataBase dataBase = new DataBase(MainActivity.this, 1);
+                if(dataBase.getRowCount() != 0){
+                    Long liczba = dataBase.getRowCount();
+
+                    Helper newest = dataBase.getOne(liczba);
+                    Integer wynik = newest.getId();
+
+             //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
+             //  I need some coffee
+                    Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "naaah", Toast.LENGTH_SHORT).show();
+
+                } */
+   // Toast.makeText(MainActivity.this, b.toString(), Toast.LENGTH_SHORT).show();
+
             }
+
         });
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,22 +178,29 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+                startActivity(getIntent());
+/*
+            try {
+                 helper = new Helper(a, -1);
+                 Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
 
-try {
-    helper = new Helper(a, -1);
-    Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
 
+            }catch (Exception e){
+                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
 
-}catch (Exception e){
-    Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+                }
+                DataBase dataBase =  new DataBase(MainActivity.this, 1);
+                boolean succes = dataBase.addOne(helper);
 
-}
-DataBase dataBase =  new DataBase(MainActivity.this, 1);
-boolean succes = dataBase.addOne(helper);
 
                 List<Helper> everyone = dataBase.getEveryone();
                 ArrayAdapter customerArrayAdapter = new ArrayAdapter<Helper>(MainActivity.this, android.R.layout.simple_list_item_1, everyone);
                 lv_customerList.setAdapter(customerArrayAdapter);
+                Integer a = helper.getId();
+                String b = a.toString();
+                    tvtv.setText(b); */
+
             }
         });
 
@@ -166,13 +209,16 @@ boolean succes = dataBase.addOne(helper);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String nowy = wynikGracza.getText().toString();
                 String nowszy = removeLastChar(nowy);
                 wynikGracza.setText(nowszy);
 
+
             }
         });
+
+
+
 
 
         zatwierdź.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +232,51 @@ boolean succes = dataBase.addOne(helper);
 
                  if (wyngrapraw == PrawWynik) {
                      Toast.makeText(MainActivity.this, "brawo", Toast.LENGTH_SHORT).show();
+
+
+
+                     DataBase dataBase = new DataBase(MainActivity.this, 1);
+                     if(dataBase.getRowCount() != 0){
+                         Long liczba = dataBase.getRowCount();
+
+                         Helper newest = dataBase.getOne(liczba);
+                         Integer wynik = newest.getId();
+
+                         //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
+                         //  I need some coffee
+                         Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
+
+
+                         int nowyWynik = wynik + 2;
+
+                         try {
+                             helper = new Helper(nowyWynik, -1);
+                             Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
+
+
+                         }catch (Exception e){
+                             Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+
+                         }
+
+                         boolean succes = dataBase.addOne(helper);
+
+
+                     }else if(dataBase.getRowCount() == 0){
+                         Toast.makeText(MainActivity.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
+
+                         try {
+                            Helper pierwszy = new Helper(2, -1);
+                             Toast.makeText(MainActivity.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
+                             boolean succes = dataBase.addOne(pierwszy);
+
+                         }catch (Exception e){
+                             Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+
+                         }
+
+
+                     }
                      finish();
                      startActivity(getIntent());
                  } else {

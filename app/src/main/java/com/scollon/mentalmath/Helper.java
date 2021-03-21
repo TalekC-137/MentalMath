@@ -12,9 +12,11 @@ public class Helper {
 
     public Helper(){}
 
+
+
     public String toString(){
 
-        return " " + punkty;
+        return " " + punkty + id;
 
     }
 
