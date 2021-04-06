@@ -21,11 +21,11 @@ public class MainActivity extends AppCompatActivity {
     TextView tv1, tv2, wynikGracza, tvtv, pukty;
     char choice, cho;
     Integer wyn;
-    Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6,btn7,btn8,btn9,btn0,btndot, delete, add;
+    Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, delete, add;
     Helper helper = new Helper();
-    ListView lv_customerList;
 
     int a = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         tv1 = findViewById(R.id.equasion);
         tv2 = findViewById(R.id.wynik);
         pukty = findViewById(R.id.punkciki);
-    //    lv_customerList = findViewById(R.id.lv_customer_List);
+
         add = findViewById(R.id.adddd);
         tvtv = findViewById(R.id.tvtv);
         btn0 = findViewById(R.id.btn0);
@@ -51,249 +51,127 @@ public class MainActivity extends AppCompatActivity {
         zatwierdź = findViewById(R.id.button);
         delete = findViewById(R.id.btnDelete);
 
-        Integer randomInt = (int)(10.0 * Math.random());
-        Integer randomInt2 = (int)(10.0 * Math.random());
-        Integer randomInt3 = (int)(3 * Math.random());
+        Integer randomInt = (int) (10.0 * Math.random());
+        Integer randomInt2 = (int) (10.0 * Math.random());
+        Integer randomInt3 = (int) (3 * Math.random());
         cho = wyb(randomInt3);
 
-        final Integer PrawWynik = wynik(randomInt,randomInt2,cho);
+        final Integer PrawWynik = wynik(randomInt, randomInt2, cho);
         String Num = randomInt.toString();
         String Num2 = randomInt2.toString();
-        tv1.setText(Num + cho + Num2+ "=?");
-        tv2.setText(PrawWynik.toString());
+        tv1.setText(Num + cho + Num2 + "=?");
+
 
         DataBase dataBase = new DataBase(MainActivity.this, 1);
-        if(dataBase.getRowCount() != 0){
+        if (dataBase.getRowCount() != 0) {
             Long liczba = dataBase.getRowCount();
-           Helper newest = dataBase.getOne(liczba);
+            Helper newest = dataBase.getOne(liczba);
             Integer wynik = newest.getId();
 
 
             pukty.setText("points: " + wynik);
-        }else{
+        } else {
             pukty.setText("points: 0");
         }
-
-
-
-        btn0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "0");
-            /*    DataBase dataBase = new DataBase(MainActivity.this, 1);
-                if(dataBase.getRowCount() != 0){
-                    Long liczba = dataBase.getRowCount();
-
-                    Helper newest = dataBase.getOne(liczba);
-                    Integer wynik = newest.getId();
-
-             //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
-             //  I need some coffee
-                    Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(MainActivity.this, "naaah", Toast.LENGTH_SHORT).show();
-
-                } */
-   // Toast.makeText(MainActivity.this, b.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-
-        });
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "1");
-            }
-        });
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "2");
-            }
-        });
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "3");
-            }
-        });
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "4");
-            }
-        });
-        btn5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "5");
-            }
-        });
-        btn6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "6");
-            }
-        });
-        btn7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "7");
-            }
-        });
-        btn8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "8");
-            }
-        });
-
-        btn9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + "9");
-
-            }
-        });
-        btndot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                wynikGracza.setText(nowy + ",");
-            }
-        });
-
-
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                startActivity(getIntent());
-/*
-            try {
-                 helper = new Helper(a, -1);
-                 Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
 
-
-            }catch (Exception e){
-                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
-
-                }
-                DataBase dataBase =  new DataBase(MainActivity.this, 1);
-                boolean succes = dataBase.addOne(helper);
-
-
-                List<Helper> everyone = dataBase.getEveryone();
-                ArrayAdapter customerArrayAdapter = new ArrayAdapter<Helper>(MainActivity.this, android.R.layout.simple_list_item_1, everyone);
-                lv_customerList.setAdapter(customerArrayAdapter);
-                Integer a = helper.getId();
-                String b = a.toString();
-                    tvtv.setText(b); */
+                tv2.setText(PrawWynik.toString());
 
             }
         });
-
 
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nowy = wynikGracza.getText().toString();
-                String nowszy = removeLastChar(nowy);
-                wynikGracza.setText(nowszy);
-
+                if (!wynikGracza.getText().toString().isEmpty()) {
+                    String nowy = wynikGracza.getText().toString();
+                    String nowszy = removeLastChar(nowy);
+                    wynikGracza.setText(nowszy);
+                } else {
+                    wynikGracza.setText("-");
+                }
 
             }
         });
-
-
-
 
 
         zatwierdź.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-             try {
-                 String wyngra = wynikGracza.getText().toString();
+                try {
+                    String wyngra = wynikGracza.getText().toString();
 
-                 int wyngrapraw = Integer.parseInt(wyngra);
+                    int wyngrapraw = Integer.parseInt(wyngra);
 
-                 if (wyngrapraw == PrawWynik) {
-                     Toast.makeText(MainActivity.this, "brawo", Toast.LENGTH_SHORT).show();
-
-
-
-                     DataBase dataBase = new DataBase(MainActivity.this, 1);
-                     if(dataBase.getRowCount() != 0){
-                         Long liczba = dataBase.getRowCount();
-
-                         Helper newest = dataBase.getOne(liczba);
-                         Integer wynik = newest.getId();
-
-                         //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
-                         //  I need some coffee
-                         Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
+                    if (wyngrapraw == PrawWynik) {
+                        Toast.makeText(MainActivity.this, "brawo", Toast.LENGTH_SHORT).show();
 
 
-                         int nowyWynik = wynik + 2;
+                        DataBase dataBase = new DataBase(MainActivity.this, 1);
+                        if (dataBase.getRowCount() != 0) {
+                            Long liczba = dataBase.getRowCount();
 
-                         try {
-                             helper = new Helper(nowyWynik, -1);
-                             Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
+                            Helper newest = dataBase.getOne(liczba);
+                            Integer wynik = newest.getId();
 
-
-                         }catch (Exception e){
-                             Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
-
-                         }
-
-                         boolean succes = dataBase.addOne(helper);
+                            //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
+                            //  I need some coffee
+                            Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
 
 
-                     }else if(dataBase.getRowCount() == 0){
-                         Toast.makeText(MainActivity.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
+                            int nowyWynik = wynik + 2;
 
-                         try {
-                            Helper pierwszy = new Helper(2, -1);
-                             Toast.makeText(MainActivity.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
-                             boolean succes = dataBase.addOne(pierwszy);
-
-                         }catch (Exception e){
-                             Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
-
-                         }
+                            try {
+                                helper = new Helper(nowyWynik, -1);
+                                Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
 
 
-                     }
-                     finish();
-                     startActivity(getIntent());
-                 } else {
-                     Toast.makeText(MainActivity.this, "śmieć", Toast.LENGTH_SHORT).show();
-                 }
-             }catch(Exception e){
+                            } catch (Exception e) {
+                                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
 
-                 Toast.makeText(MainActivity.this, "enter a valid number", Toast.LENGTH_SHORT).show();
-             }
+                            }
+
+                            boolean succes = dataBase.addOne(helper);
+
+
+                        } else if (dataBase.getRowCount() == 0) {
+                            Toast.makeText(MainActivity.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
+
+                            try {
+                                Helper pierwszy = new Helper(2, -1);
+                                Toast.makeText(MainActivity.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
+                                boolean succes = dataBase.addOne(pierwszy);
+
+                            } catch (Exception e) {
+                                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        }
+                        finish();
+                        startActivity(getIntent());
+                    } else {
+                        Toast.makeText(MainActivity.this, "śmieć", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+
+                    Toast.makeText(MainActivity.this, "enter a valid number", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
         });
 
     }
-    public char wyb(Integer rand){
-        switch (rand){
+
+    public char wyb(Integer rand) {
+        switch (rand) {
             case 0:
                 choice = '+';
                 break;
@@ -308,9 +186,9 @@ public class MainActivity extends AppCompatActivity {
         return choice;
     }
 
-    public Integer wynik (Integer var1, Integer var2, char znak){
+    public Integer wynik(Integer var1, Integer var2, char znak) {
 
-        switch (znak){
+        switch (znak) {
             case '+':
                 wyn = var1 + var2;
                 break;
@@ -327,4 +205,61 @@ public class MainActivity extends AppCompatActivity {
     public static String removeLastChar(String s) {
         return (s == null) ? null : s.replaceAll(".$", "");
     }
+
+    public void ClickMuch(View v){
+        switch(v.getId()){
+
+            case R.id.btn1:
+                String nowy = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy + "1");
+                break;
+            case R.id.btn2:
+                String nowy1 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy1 + "2");
+                break;
+            case R.id.btn3:
+                String nowy2 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy2 + "3");
+                break;
+            case R.id.btn4:
+                String nowy3 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy3 + "4");
+                break;
+            case R.id.btn5:
+                String nowy4 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy4 + "5");
+                break;
+            case R.id.btn6:
+                String nowy5 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy5 + "6");
+                break;
+            case R.id.btn7:
+                String nowy6 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy6 + "7");
+                break;
+            case R.id.btn8:
+                String nowy7 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy7 + "8");
+                break;
+            case R.id.btn9:
+                String nowy8 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy8 + "9");
+                break;
+            case R.id.btn0:
+                String nowy0 = wynikGracza.getText().toString();
+                wynikGracza.setText(nowy0 + "0");
+                break;
+            case R.id.btndot:
+                if(!wynikGracza.getText().toString().isEmpty()){
+                    String nowy00 = wynikGracza.getText().toString();
+                    wynikGracza.setText(nowy00 + ",");}
+                else
+                    break;
+        }
+
+    }
+
+
+
+
 }
