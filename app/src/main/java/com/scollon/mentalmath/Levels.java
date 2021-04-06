@@ -4,33 +4,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    TextView tv1, tv2, wynikGracza, tvtv, pukty;
+public class Levels extends AppCompatActivity {
+TextView tv_test;
+    TextView tv1, tv2, wynikGracza, tvtv, pukty, poziom;
     char choice, cho;
     Integer wyn;
-    Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, delete, add;
+    Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, delete, hint;
     Helper helper = new Helper();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_levels);
+        //tv_test = findViewById(R.id.tv_dziala);
+        Intent i = getIntent();
+        final Integer numer = i.getIntExtra("poziom", 0);
+
+        poziom = findViewById(R.id.poziom);
         tv1 = findViewById(R.id.equasion);
         tv2 = findViewById(R.id.wynik);
         pukty = findViewById(R.id.punkciki);
-        add = findViewById(R.id.adddd);
+        hint = findViewById(R.id.hint);
         tvtv = findViewById(R.id.tvtv);
         btn0 = findViewById(R.id.btn0);
         btn1 = findViewById(R.id.btn1);
@@ -47,18 +47,13 @@ public class MainActivity extends AppCompatActivity {
         zatwierdź = findViewById(R.id.button);
         delete = findViewById(R.id.btnDelete);
 
-        Integer randomInt = (int) (10.0 * Math.random());
-        Integer randomInt2 = (int) (10.0 * Math.random());
-        Integer randomInt3 = (int) (3 * Math.random());
-        cho = wyb(randomInt3);
-
-        final Integer PrawWynik = wynik(randomInt, randomInt2, cho);
-        String Num = randomInt.toString();
-        String Num2 = randomInt2.toString();
-        tv1.setText(Num + cho + Num2 + "=?");
+        tv1.setText(dzialnie(numer));
+        poziom.setText("level: " + numer.toString());
+        final String PrawWynik = wynik(numer);
+        final Float wyniczek = Float.parseFloat(PrawWynik);
 
 
-        DataBase dataBase = new DataBase(MainActivity.this, 1);
+        DataBase dataBase = new DataBase(Levels.this, 1);
         if (dataBase.getRowCount() != 0) {
             Long liczba = dataBase.getRowCount();
             Helper newest = dataBase.getOne(liczba);
@@ -70,11 +65,12 @@ public class MainActivity extends AppCompatActivity {
             pukty.setText("points: 0");
         }
 
-        add.setOnClickListener(new View.OnClickListener() {
+
+        hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                tv2.setText(PrawWynik.toString());
+                tv2.setText(PrawWynik);
 
             }
         });
@@ -104,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
                     int wyngrapraw = Integer.parseInt(wyngra);
 
-                    if (wyngrapraw == PrawWynik) {
-                        Toast.makeText(MainActivity.this, "brawo", Toast.LENGTH_SHORT).show();
+                    if (wyngrapraw == wyniczek) {
+                        Toast.makeText(Levels.this, "brawo", Toast.LENGTH_SHORT).show();
 
 
-                        DataBase dataBase = new DataBase(MainActivity.this, 1);
+                        DataBase dataBase = new DataBase(Levels.this, 1);
                         if (dataBase.getRowCount() != 0) {
                             Long liczba = dataBase.getRowCount();
 
@@ -117,18 +113,18 @@ public class MainActivity extends AppCompatActivity {
 
                             //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
                             //  I need some coffee
-                            Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Levels.this, wynik.toString(), Toast.LENGTH_SHORT).show();
 
 
-                            int nowyWynik = wynik + 2;
+                            int nowyWynik = wynik + 5;
 
                             try {
                                 helper = new Helper(nowyWynik, -1);
-                                Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Levels.this, "50%", Toast.LENGTH_SHORT).show();
 
 
                             } catch (Exception e) {
-                                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Levels.this, "0%", Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -136,28 +132,38 @@ public class MainActivity extends AppCompatActivity {
 
 
                         } else if (dataBase.getRowCount() == 0) {
-                            Toast.makeText(MainActivity.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Levels.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
 
                             try {
                                 Helper pierwszy = new Helper(2, -1);
-                                Toast.makeText(MainActivity.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Levels.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
                                 boolean succes = dataBase.addOne(pierwszy);
 
                             } catch (Exception e) {
-                                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Levels.this, "0%", Toast.LENGTH_SHORT).show();
 
                             }
 
 
                         }
-                        finish();
-                        startActivity(getIntent());
-                    } else {
-                        Toast.makeText(MainActivity.this, "śmieć", Toast.LENGTH_SHORT).show();
+                        if(numer == 10){
+                            Intent i = new Intent(Levels.this, menu.class);
+                            startActivity(i);
+                        }else {
+                            finish();
+                            Intent i = getIntent();
+                            i.putExtra("poziom", numer + 1);
+                            startActivity(i);
+                        }
+
+
+                    }
+                    else {
+                        Toast.makeText(Levels.this, "śmieć", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
 
-                    Toast.makeText(MainActivity.this, "enter a valid number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Levels.this, "enter a valid number", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -166,37 +172,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public char wyb(Integer rand) {
-        switch (rand) {
-            case 0:
-                choice = '+';
-                break;
-            case 1:
-                choice = '-';
-                break;
-            case 2:
-                choice = '*';
-                break;
-
-        }
-        return choice;
-    }
-
-    public Integer wynik(Integer var1, Integer var2, char znak) {
-
-        switch (znak) {
-            case '+':
-                wyn = var1 + var2;
-                break;
-            case '-':
-                wyn = var1 - var2;
-                break;
-            case '*':
-                wyn = var1 * var2;
-                break;
-        }
-        return wyn;
-    }
 
     public static String removeLastChar(String s) {
         return (s == null) ? null : s.replaceAll(".$", "");
@@ -253,4 +228,81 @@ public class MainActivity extends AppCompatActivity {
                     break;
         }
     }
+
+    public String dzialnie (Integer Num) {
+        String dzial = "";
+        switch (Num) {
+            case 1:
+                dzial = "8-3*3";
+            break;
+            case 2:
+                dzial = "6*3+1";
+            break;
+            case 3:
+                dzial = "0+2*42";
+            break;
+            case 4:
+                dzial = "94-25+1";
+            break;
+            case 5:
+                dzial = "2*3:2";
+            break;
+            case 6:
+                dzial = "7:7*7";
+            break;
+            case 7:
+                dzial = "9*3:2+8";
+            break;
+            case 8:
+                dzial = "6+6*2";
+            break;
+            case 9:
+                dzial = "9*2+2*3+4*0";
+            break;
+            case 10:
+                dzial = "(9*2+4:2-1)*0";
+           break;
+
+        }
+        return dzial;
+    }
+
+    public String wynik (Integer Num) {
+        String dzial = "";
+        switch (Num) {
+            case 1:
+                dzial = "-1";
+                break;
+            case 2:
+                dzial = "19";
+                break;
+            case 3:
+                dzial = "84";
+                break;
+            case 4:
+                dzial = "70";
+                break;
+            case 5:
+                dzial = "3";
+                break;
+            case 6:
+                dzial = "7";
+                break;
+            case 7:
+                dzial = "21,5";
+                break;
+            case 8:
+                dzial = "18";
+                break;
+            case 9:
+                dzial = "24";
+                break;
+            case 10:
+                dzial = "0";
+                break;
+
+        }
+        return dzial;
+    }
+
 }
