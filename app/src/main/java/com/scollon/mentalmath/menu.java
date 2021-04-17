@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class menu extends AppCompatActivity {
 Button endless;
-Button lvl1, lvl2, lvl3, lvl4, lvl5, lvl6, lvl7, lvl8, lvl9, lvl10;
+Button lvl1, lvl2, lvl3, lvl4, lvl5, lvl6, lvl7, lvl8, lvl9, lvl10, endless2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +25,8 @@ Button lvl1, lvl2, lvl3, lvl4, lvl5, lvl6, lvl7, lvl8, lvl9, lvl10;
         lvl8 = findViewById(R.id.lvl8);
         lvl9 = findViewById(R.id.lvl9);
         lvl10 = findViewById(R.id.lvl10);
+        endless2 = findViewById(R.id.endless2);
+
 
 
     endless.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +36,13 @@ Button lvl1, lvl2, lvl3, lvl4, lvl5, lvl6, lvl7, lvl8, lvl9, lvl10;
             startActivity(i);
         }
     });
-
+endless2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent i = new Intent(menu.this, endless2.class);
+        startActivity(i);
+    }
+});
     }
     public void Klik(View v){
         switch (v.getId()){
@@ -88,8 +96,6 @@ Button lvl1, lvl2, lvl3, lvl4, lvl5, lvl6, lvl7, lvl8, lvl9, lvl10;
                 i10.putExtra("poziom", 10);
                 startActivity(i10);
                 break;
-
-
         }
 
     }

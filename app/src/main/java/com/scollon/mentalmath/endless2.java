@@ -2,31 +2,22 @@ package com.scollon.mentalmath;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
-
+public class endless2 extends AppCompatActivity {
     TextView tv1, tv2, wynikGracza, tvtv, pukty;
-    char choice, cho;
-    Integer wyn;
+    char choice, cho, cho2;
+    Integer wyn, outcome, FinalOutcome;
     Button zatwierdź, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btndot, delete, add;
     Helper helper = new Helper();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_endless2);
         tv1 = findViewById(R.id.equasion);
         tv2 = findViewById(R.id.wynik);
         pukty = findViewById(R.id.punkciki);
@@ -50,15 +41,18 @@ public class MainActivity extends AppCompatActivity {
         Integer randomInt = (int) (10.0 * Math.random());
         Integer randomInt2 = (int) (10.0 * Math.random());
         Integer randomInt3 = (int) (3 * Math.random());
+        Integer randomIntTrzy = (int) (10.0 * Math.random());
+        Integer randomIntChar2 = (int) (3 * Math.random());
         cho = wyb(randomInt3);
-
-        final Integer PrawWynik = wynik(randomInt, randomInt2, cho);
+        cho2 = wyb(randomIntChar2);
+        final Integer PrawWynik = solver(randomInt, cho, randomInt2, cho2, randomIntTrzy);
         String Num = randomInt.toString();
         String Num2 = randomInt2.toString();
-        tv1.setText(Num + cho + Num2 + "=?");
+        String Num3 = randomIntTrzy.toString();
+        tv1.setText(Num + cho + Num2 + cho2 + Num3);
 
 
-        DataBase dataBase = new DataBase(MainActivity.this, 1);
+        DataBase dataBase = new DataBase(endless2.this, 1);
         if (dataBase.getRowCount() != 0) {
             Long liczba = dataBase.getRowCount();
             Helper newest = dataBase.getOne(liczba);
@@ -105,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
                     int wyngrapraw = Integer.parseInt(wyngra);
 
                     if (wyngrapraw == PrawWynik) {
-                        Toast.makeText(MainActivity.this, "brawo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(endless2.this, "brawo", Toast.LENGTH_SHORT).show();
 
 
-                        DataBase dataBase = new DataBase(MainActivity.this, 1);
+                        DataBase dataBase = new DataBase(endless2.this, 1);
                         if (dataBase.getRowCount() != 0) {
                             Long liczba = dataBase.getRowCount();
 
@@ -117,18 +111,18 @@ public class MainActivity extends AppCompatActivity {
 
                             //  I messed up the id and points order so getIt returns points and getPoints returns the id :))))
                             //  I need some coffee
-                            Toast.makeText(MainActivity.this, wynik.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(endless2.this, wynik.toString(), Toast.LENGTH_SHORT).show();
 
 
                             int nowyWynik = wynik + 2;
 
                             try {
                                 helper = new Helper(nowyWynik, -1);
-                                Toast.makeText(MainActivity.this, "50%", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(endless2.this, "50%", Toast.LENGTH_SHORT).show();
 
 
                             } catch (Exception e) {
-                                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(endless2.this, "0%", Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -136,15 +130,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                         } else if (dataBase.getRowCount() == 0) {
-                            Toast.makeText(MainActivity.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(endless2.this, "pierwszy wynik", Toast.LENGTH_SHORT).show();
 
                             try {
                                 Helper pierwszy = new Helper(2, -1);
-                                Toast.makeText(MainActivity.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(endless2.this, "wkładany pierwszy", Toast.LENGTH_SHORT).show();
                                 boolean succes = dataBase.addOne(pierwszy);
 
                             } catch (Exception e) {
-                                Toast.makeText(MainActivity.this, "0%", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(endless2.this, "0%", Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -153,11 +147,11 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         startActivity(getIntent());
                     } else {
-                        Toast.makeText(MainActivity.this, "śmieć", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(endless2.this, "śmieć", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
 
-                    Toast.makeText(MainActivity.this, "enter a valid number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(endless2.this, "enter a valid number", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -254,4 +248,38 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-}
+         public Integer solver (Integer var1,char znak, Integer var2,  char znak2, Integer var3){
+       if(znak == '+'  && znak2 == '+') {
+           FinalOutcome = var1 + var2 + var3;
+       }else if(znak == '+'  && znak2 == '-') {
+           FinalOutcome = var1 + var2 - var3;
+       }else if(znak == '-'  && znak2 == '+'){
+           FinalOutcome = var1 - var2 + var3;
+       }else if(znak == '-'  && znak2 == '-'){
+            FinalOutcome = var1 - var2 - var3;
+       }else if(znak == '*' && znak2 == '*'){
+
+           FinalOutcome = var1*var2*var3;
+       }else if(znak == '*' && znak2 == '+' ||znak == '*' &&  znak2 == '-'){
+           switch (znak2){
+               case '+':
+                   FinalOutcome = var1*var2 + var3;
+                   break;
+               case '-':
+                   FinalOutcome = var1*var2 -var3;
+                   break;
+           }
+
+       }else if(znak == '-' && znak2 =='*' || znak == '+' && znak2 =='*'){
+           switch (znak){
+               case '+':
+                   FinalOutcome = var1 + var2 * var3;
+                   break;
+               case  '-':
+                   FinalOutcome = var1 - var2 * var3;
+           }
+       }
+
+        return FinalOutcome;
+         }
+    }
